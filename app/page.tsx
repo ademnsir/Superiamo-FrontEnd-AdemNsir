@@ -74,11 +74,12 @@ export default function SignInPage() {
          
 
           <p className="mt-6 text-gray-500">
-            Vous n'avez pas encore de compte ?{" "}
-            <span onClick={() => router.push("/signup")} className="text-blue-600 underline cursor-pointer">
-              Inscrivez-vous
-            </span>
-          </p>
+  Vous n&#39;avez pas encore de compte ?{" "}
+  <span onClick={() => router.push("/signup")} className="text-blue-600 underline cursor-pointer">
+    Inscrivez-vous
+  </span>
+</p>
+
         </div>
 
         <div className="w-1/2 flex items-center justify-center relative overflow-hidden bg-transparent">
