@@ -1,8 +1,10 @@
-import { NextAuthOptions, getServerSession } from "next-auth";
+import { NextAuthOptions, User, getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
+import { redirect, useRouter } from "next/navigation";
+
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
-import { redirect } from "next/navigation";
 
 export const authConfig: NextAuthOptions = {
   providers: [
@@ -17,10 +19,10 @@ export const authConfig: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials || !credentials.email || !credentials.password) {
-          return null;
-        }
-        return null; // Here, the logic for authentication would be implemented
+        if (!credentials || !credentials.email || !credentials.password) return null;
+
+        // Handle your own user authentication logic here
+        return null;
       },
     }),
     GoogleProvider({
@@ -39,16 +41,9 @@ export async function loginIsRequiredServer() {
   if (!session) return redirect("/");
 }
 
-// Custom Hook to Handle Client-Side Logic
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-
-// New Custom Hook for Client-Side Usage
-export function useLoginIsRequiredClient() {
-  const { data: session } = useSession();
+export function useLoginRequiredClient() {
+  const session = useSession();
   const router = useRouter();
 
-  if (!session) {
-    router.push("/");
-  }
+  if (!session) router.push("/");
 }
