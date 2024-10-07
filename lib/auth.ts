@@ -4,9 +4,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import { NextAuthOptions } from "next-auth";
-import { GetServerSidePropsContext } from "next";
 
-// Configuration d'authentification NextAuth
+
 export const authConfig: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -17,19 +16,17 @@ export const authConfig: NextAuthOptions = {
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     }),
+ 
   ],
   pages: {
-    signIn: "/signin", // Page de connexion personnalisée
+    signIn: "/signin",
   },
 };
 
-// Fonction qui nécessite `req` et `res` pour vérifier la session
-export async function loginIsRequiredServer(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authConfig);
+
+export async function loginIsRequiredServer() {
+  const session = await getServerSession(authConfig);
   if (!session) {
-    // Redirection vers la page de connexion si la session n'est pas présente
-    context.res.writeHead(302, { Location: "/signin" });
-    context.res.end();
+    redirect("/signin");
   }
-  return session;
 }
