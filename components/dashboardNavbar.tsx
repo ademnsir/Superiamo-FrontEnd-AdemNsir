@@ -10,7 +10,6 @@ function DashboardNavbar() {
   return (
     <div className="flex flex-col justify-between h-screen p-4 w-80 bg-gradient-to-r from-gray-100 to-gray-200 shadow-lg shadow-gray-500">
       <div className="flex flex-col items-center">
- 
         {session?.user?.image && (
           <div className="flex items-center mb-4">
             <Image
@@ -24,7 +23,6 @@ function DashboardNavbar() {
           </div>
         )}
         <nav className="mb-4">
-      
           <NavItem icon={<FaCog className="text-xl text-gray-800" />} label="Edit Profile" />
         </nav>
       </div>
@@ -33,11 +31,7 @@ function DashboardNavbar() {
         onClick={() => signOut({ callbackUrl: "/" })}
       >
         {session?.user?.image && (
-          <img
-            className="h-8 w-8 rounded-full shadow-md"
-            src={session.user.image}
-            alt="User profile"
-          />
+          <img className="h-8 w-8 rounded-full shadow-md" src={session.user.image} alt="User profile" />
         )}
         <span className="font-semibold">Logout</span>
       </button>
@@ -46,9 +40,7 @@ function DashboardNavbar() {
 }
 
 const NavItem = ({ icon, label }) => (
-  <div
-    className="mb-2 hover:bg-gray-300 rounded-full py-2 px-4 flex items-center space-x-2 shadow-sm transform transition-all duration-200 active:scale-95"
-  >
+  <div className="mb-2 hover:bg-gray-300 rounded-full py-2 px-4 flex items-center space-x-2 shadow-sm transform transition-all duration-200 active:scale-95">
     {icon}
     <span className="font-semibold text-gray-800">{label}</span>
   </div>
