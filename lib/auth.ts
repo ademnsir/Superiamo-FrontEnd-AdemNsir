@@ -5,7 +5,6 @@ import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import { NextAuthOptions } from "next-auth";
 
-
 export const authConfig: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -16,17 +15,21 @@ export const authConfig: NextAuthOptions = {
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     }),
- 
   ],
   pages: {
-    signIn: "/signin",
+    signIn: "/", // Remplace "/signin" par "/" ou une autre page personnalisée
+  },
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Utiliser baseUrl si aucun `url` n'est spécifié
+      return baseUrl;
+    },
   },
 };
-
 
 export async function loginIsRequiredServer() {
   const session = await getServerSession(authConfig);
   if (!session) {
-    redirect("/signin");
+    redirect("/");
   }
 }
