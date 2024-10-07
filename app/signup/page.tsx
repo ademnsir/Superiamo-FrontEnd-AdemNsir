@@ -120,21 +120,21 @@ export default function SignUpPage() {
       alert("Veuillez corriger les erreurs de saisie.");
       return;
     }
-
+  
     if (!isAddressValid) {
       alert("L'adresse doit être située à moins de 50 km de Paris !");
       return;
     }
-
+  
     try {
       const response = await fetch("https://superiamo-backend-ademnsir-production.up.railway.app/api/auth/register", {
-        method: "POST",
+        method: "POST", // Vérifiez bien que la méthode est POST
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
         alert("Utilisateur créé avec succès !");
         router.push("/");
@@ -145,7 +145,7 @@ export default function SignUpPage() {
       console.error("Erreur lors de l'ajout de l'utilisateur :", error);
     }
   };
-
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-transparent">
       <div className="flex w-[1200px] h-[700px] bg-transparent rounded-2xl overflow-hidden border border-gray-300">
