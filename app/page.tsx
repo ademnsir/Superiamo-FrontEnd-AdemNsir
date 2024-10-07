@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import googleLogo from "@/public/google.png";
 import gitLogo from "@/public/github.png";
-import illustration from "@/public/sign in.jpg";
+import illustration from "@/public/signin.jpg";
 import { GoogleSignInButton, GithubSignInButton } from "@/components/authButtons";
 
 export default function SignInPage() {
