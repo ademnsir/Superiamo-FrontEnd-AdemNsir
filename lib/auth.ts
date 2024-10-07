@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import { NextAuthOptions } from "next-auth";
 
+
 export const authConfig: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -24,21 +25,19 @@ export const authConfig: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials || !credentials.email || !credentials.password) return null;
 
-        // Custom logic to validate the credentials
         return { id: "1", name: "John Doe", email: credentials.email };
       },
     }),
   ],
   pages: {
-    signIn: "/signin", // Optional: custom sign in page
+    signIn: "/signin",
   },
 };
 
-// Fonction pour vérifier la session côté serveur
-export async function loginIsRequiredServer(context: any) {
-  const session = await getServerSession(context.req, context.res, authConfig);
+
+export async function loginIsRequiredServer() {
+  const session = await getServerSession(authConfig);
   if (!session) {
     redirect("/signin");
   }
-  return session;
 }
