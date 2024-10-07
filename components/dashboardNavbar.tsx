@@ -14,7 +14,7 @@ function DashboardNavbar() {
           <div className="flex items-center mb-4">
             <Image
               src={session.user.image}
-              alt="User profile"
+              alt="User&apos;s profile"
               width={50}
               height={50}
               className="rounded-full shadow-2xl"
@@ -31,7 +31,11 @@ function DashboardNavbar() {
         onClick={() => signOut({ callbackUrl: "/" })}
       >
         {session?.user?.image && (
-          <img className="h-8 w-8 rounded-full shadow-md" src={session.user.image} alt="User profile" />
+          <img
+            className="h-8 w-8 rounded-full shadow-md"
+            src={session.user.image}
+            alt="User&apos;s profile" 
+          />
         )}
         <span className="font-semibold">Logout</span>
       </button>

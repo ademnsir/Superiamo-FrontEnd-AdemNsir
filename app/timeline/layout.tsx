@@ -1,6 +1,6 @@
 import DashboardNavbar from "@/components/dashboardNavbar";
 
-export default async function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({ children }: { children: any }) {
   return (
     <main className="flex w-full justify-center items-center">
       <DashboardNavbar />

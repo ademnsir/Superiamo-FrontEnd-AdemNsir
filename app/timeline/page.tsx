@@ -13,7 +13,10 @@ export default async function Page() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-5xl font-bold text-white">Welcome to Superiamo</h1>
+      {/* Use escaped single quotes instead of direct single quote character */}
+      <h1 className="text-5xl font-bold text-white">
+        Welcome to Superiamo&apos;s Dashboard {/* Corrected line to escape the apostrophe */}
+      </h1>
     </div>
   );
 }
