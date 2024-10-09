@@ -183,8 +183,8 @@ function DashboardNavbar() {
             <Image
               src={session.user.image}
               alt="User profile"
-              width={150}
-              height={150}
+              width={100}
+              height={100}
               className="rounded-full border-4 border-white shadow-xl"
             />
           ) : (
