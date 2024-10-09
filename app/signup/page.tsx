@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import React, { useState } from "react";
+
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import illustration from "@/public/signup.jpg";
