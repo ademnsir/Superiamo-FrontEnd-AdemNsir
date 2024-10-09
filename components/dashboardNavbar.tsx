@@ -22,70 +22,38 @@ function DashboardNavbar() {
 
   const router = useRouter();
 
-  // Utiliser useEffect pour Google seulement
   useEffect(() => {
     if (session?.user?.email) {
-      const userData = { email: session.user.email };
-
-      fetch(`https://superiamo-backend-ademnsir-production.up.railway.app/api/auth/google-user`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.user) {
-            const formattedDateNaissance = data.user.dateNaissance
-              ? new Date(data.user.dateNaissance).toISOString().split("T")[0]
-              : "";
-            setFormData({
-              nom: data.user.nom || "",
-              prenom: data.user.prenom || "",
-              dateNaissance: formattedDateNaissance,
-              adresse: data.user.adresse || "",
-              numeroTelephone: data.user.numeroTelephone || "",
-              email: data.user.email || "",
-            });
-          }
-        })
-        .catch((error) => console.error("Erreur lors de la requête API Google:", error));
+      fetchUserData(session.user.email);
     }
   }, [session?.user?.email]);
 
-  // Utiliser useEffect pour GitHub seulement
-  useEffect(() => {
-    if (session?.user?.name && session.user.name.split(" ").length === 2) {
-      const userData = {
-        nom: session.user.name.split(" ")[0],
-        prenom: session.user.name.split(" ")[1],
-      };
-
-      fetch(`https://superiamo-backend-ademnsir-production.up.railway.app/api/auth/github-user`, {
+  const fetchUserData = async (email: string) => {
+    try {
+      // Fetch user data from backend based on the email
+      const response = await fetch(`/api/auth/google-user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.user) {
-            const formattedDateNaissance = data.user.dateNaissance
-              ? new Date(data.user.dateNaissance).toISOString().split("T")[0]
-              : "";
-            setFormData({
-              nom: data.user.nom || "",
-              prenom: data.user.prenom || "",
-              dateNaissance: formattedDateNaissance,
-              adresse: data.user.adresse || "",
-              numeroTelephone: data.user.numeroTelephone || "",
-              email: data.user.email || "",
-            });
-          }
-        })
-        .catch((error) => console.error("Erreur lors de la requête API GitHub:", error));
-    }
-  }, [session?.user?.name]);
+        body: JSON.stringify({ email }),
+      });
 
-  const fetchAddressCoordinates = async (address) => {
+      const data = await response.json();
+      if (data.user) {
+        setFormData({
+          nom: data.user.nom || "",
+          prenom: data.user.prenom || "",
+          dateNaissance: data.user.dateNaissance || "",
+          adresse: data.user.adresse || "",
+          numeroTelephone: data.user.numeroTelephone || "",
+          email: data.user.email || "",
+        });
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération des données utilisateur :", error);
+    }
+  };
+
+  const fetchAddressCoordinates = async (address: string) => {
     try {
       const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(address)}`);
       if (!response.ok) {
@@ -105,8 +73,8 @@ function DashboardNavbar() {
     }
   };
 
-  const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const toRad = (value) => (value * Math.PI) / 180;
+  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+    const toRad = (value: number) => (value * Math.PI) / 180;
     const R = 6371; // Rayon de la terre en km
     const dLat = toRad(lat2 - lat1);
     const dLon = toRad(lon2 - lon1);
@@ -117,7 +85,7 @@ function DashboardNavbar() {
     return R * c; // Distance en km
   };
 
-  const validateAddress = async (address) => {
+  const validateAddress = async (address: string) => {
     if (!address) return;
 
     const userCoordinates = await fetchAddressCoordinates(address);
@@ -139,7 +107,7 @@ function DashboardNavbar() {
     }
   };
 
-  const handleChange = async (e) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
@@ -158,7 +126,7 @@ function DashboardNavbar() {
     }
 
     try {
-      const response = await fetch("https://superiamo-backend-ademnsir-production.up.railway.app/api/auth/update-profile", {
+      const response = await fetch("/api/auth/update-profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -180,21 +148,9 @@ function DashboardNavbar() {
       <div className="w-full h-48 bg-gradient-to-r from-indigo-500 to-purple-600 relative rounded-b-2xl shadow-md">
         <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2">
           {session?.user?.image ? (
-            <Image
-              src={session.user.image}
-              alt="User profile"
-              width={100}
-              height={100}
-              className="rounded-full border-4 border-white shadow-xl"
-            />
+            <Image src={session.user.image} alt="User profile" width={100} height={100} className="rounded-full border-4 border-white shadow-xl" />
           ) : (
             <div className="w-36 h-36 bg-gray-200 rounded-full border-4 border-white shadow-xl"></div>
-          )}
-       
-          {!editMode && (
-            <p className="text-sm font-medium text-gray-600 mt-2">
-              {formData.email || session?.user?.email || ""}
-            </p>
           )}
         </div>
       </div>
@@ -210,11 +166,7 @@ function DashboardNavbar() {
               <input type="text" name="adresse" placeholder="Adresse" value={formData.adresse} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-md" />
               {formData.adresse && (
                 <p className={`text-sm ${isAddressValid ? "text-green-600" : "text-red-600"}`}>
-                  {isAddressValid === null
-                    ? ""
-                    : isAddressValid
-                    ? `Adresse valide (${distance?.toFixed(2)} km de Paris)`
-                    : "Adresse invalide (doit être à moins de 50 km de Paris, essayez Paris, Puteaux…)"}
+                  {isAddressValid === null ? "" : isAddressValid ? `Adresse valide (${distance?.toFixed(2)} km de Paris)` : "Adresse invalide (doit être à moins de 50 km de Paris)"}
                 </p>
               )}
               <input type="tel" name="numeroTelephone" placeholder="Numéro de téléphone" value={formData.numeroTelephone} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-md" />
@@ -229,10 +181,7 @@ function DashboardNavbar() {
             <nav className="mb-4">
               <NavItem icon={<FaCog className="text-xl text-gray-800" />} label="Modifier le profil" onClick={() => setEditMode(true)} />
             </nav>
-            <button
-              className="bg-white rounded-full border border-gray-200 text-gray-800 px-4 py-2 flex items-center space-x-2 hover:bg-gray-200 transform hover:scale-105 transition-all duration-300"
-              onClick={() => signOut({ callbackUrl: "/" })}
-            >
+            <button className="bg-white rounded-full border border-gray-200 text-gray-800 px-4 py-2 flex items-center space-x-2 hover:bg-gray-200 transform hover:scale-105 transition-all duration-300" onClick={() => signOut({ callbackUrl: "/" })}>
               {session?.user?.image && <Image src={session.user.image} alt="User profile" width={32} height={32} className="rounded-full shadow-md" />}
               <span className="font-semibold">Déconnexion</span>
             </button>
@@ -243,7 +192,7 @@ function DashboardNavbar() {
   );
 }
 
-const NavItem = ({ icon, label, onClick }) => (
+const NavItem = ({ icon, label, onClick }: { icon: JSX.Element; label: string; onClick: () => void }) => (
   <div onClick={onClick} className="mb-2 hover:bg-gray-300 rounded-full py-2 px-4 flex items-center space-x-2 shadow-sm">
     {icon}
     <span className="font-semibold text-gray-800">{label}</span>
