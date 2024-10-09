@@ -5,7 +5,7 @@ import { FaCog } from "react-icons/fa";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import bgprofile from "@/public/profile.png";
+import bgprofile from "@/public/bgimage.jpg";
 
 function DashboardNavbar() {
   const { data: session, status } = useSession();
