@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import illustration from "@/public/signup.jpg";
 
+
 interface FormErrors {
   nom?: string;
   prenom?: string;
