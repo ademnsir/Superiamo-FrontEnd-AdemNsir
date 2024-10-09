@@ -1,9 +1,7 @@
 "use client";
-
 import React, { useState } from "react";
-
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import illustration from "@/public/signup.jpg";
 
 
@@ -30,8 +28,9 @@ export default function SignUpPage() {
   });
   const [isAddressValid, setIsAddressValid] = useState<boolean | null>(null);
   const [distance, setDistance] = useState<number | null>(null);
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [errors, setErrors] = useState<FormErrors>({}); 
 
+ 
   const fetchAddressCoordinates = async (address: string) => {
     try {
       const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(address)}`);
@@ -51,6 +50,7 @@ export default function SignUpPage() {
     }
   };
 
+
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
     const toRad = (value: number) => (value * Math.PI) / 180;
     const R = 6371;
@@ -63,6 +63,7 @@ export default function SignUpPage() {
     return R * c;
   };
 
+  
   const validateAddress = async (address: string) => {
     const userCoordinates = await fetchAddressCoordinates(address);
     const parisCoordinates = { latitude: 48.8566, longitude: 2.3522 };
@@ -83,6 +84,7 @@ export default function SignUpPage() {
     }
   };
 
+ 
   const validateFields = () => {
     const tempErrors: FormErrors = {};
     if (!formData.nom.trim()) tempErrors.nom = "Le nom est requis.";
@@ -102,6 +104,7 @@ export default function SignUpPage() {
     return Object.keys(tempErrors).length === 0;
   };
 
+  
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -111,26 +114,27 @@ export default function SignUpPage() {
     }
   };
 
+
   const handleSubmit = async () => {
     if (!validateFields()) {
       alert("Veuillez corriger les erreurs de saisie.");
       return;
     }
-
+  
     if (!isAddressValid) {
       alert("L'adresse doit être située à moins de 50 km de Paris !");
       return;
     }
-
+  
     try {
       const response = await fetch("https://superiamo-backend-ademnsir-production.up.railway.app/api/auth/register", {
-        method: "POST",
+        method: "POST", // Vérifiez bien que la méthode est POST
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
         alert("Utilisateur créé avec succès !");
         router.push("/");
@@ -141,7 +145,7 @@ export default function SignUpPage() {
       console.error("Erreur lors de l'ajout de l'utilisateur :", error);
     }
   };
-
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-transparent">
       <div className="flex w-[1200px] h-[700px] bg-transparent rounded-2xl overflow-hidden border border-gray-300">
@@ -183,7 +187,7 @@ export default function SignUpPage() {
               ? "Adresse en cours de validation..."
               : isAddressValid
               ? `Adresse valide (${distance?.toFixed(2)} km de Paris)`
-              : "Adresse invalide (doit être à moins de 50 km de Paris)"}
+              : "Adresse invalide (doit être à moins de 50 km de Paris, essayez Paris, Puteaux…)"}
           </p>
           <input
             type="tel"
