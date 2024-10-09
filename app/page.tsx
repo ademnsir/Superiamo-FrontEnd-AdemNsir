@@ -55,11 +55,7 @@ export default function SignInPage() {
           <h1 className="text-4xl font-extrabold text-gray-800 mb-8">Connexion</h1>
           <GoogleSignInButton />
           <GithubSignInButton />
-          <div className="flex items-center justify-center space-x-4 mt-6 w-full">
-            <span className="border-t border-gray-300 flex-grow"></span>
-            <span className="text-gray-500 font-medium">OU</span>
-            <span className="border-t border-gray-300 flex-grow"></span>
-          </div>
+         
         </div>
         <div className="w-1/2 flex items-center justify-center relative overflow-hidden bg-transparent">
           <Image src={illustration} alt="Illustration" fill className="object-cover" />
