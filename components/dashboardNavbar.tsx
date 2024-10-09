@@ -5,6 +5,7 @@ import { FaCog } from "react-icons/fa";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import bgprofile from "@/public/profile.png";
 
 function DashboardNavbar() {
   const { data: session, status } = useSession();
@@ -54,7 +55,14 @@ function DashboardNavbar() {
 
   return (
     <div className={`flex flex-col items-center justify-between h-screen ${editMode ? "w-full" : "w-80"} bg-gradient-to-r from-gray-100 to-gray-200 shadow-lg shadow-gray-500 transition-all duration-500`}>
-      <div className="w-full h-48 bg-gradient-to-r from-indigo-500 to-purple-600 relative rounded-b-2xl shadow-md">
+      {/* Section avec l'image de fond */}
+      <div className="w-full h-48 relative rounded-b-2xl shadow-md">
+        <Image
+          src={bgprofile} // Utilisation de bgprofile comme image de fond
+          alt="Background Image"
+          fill
+          className="object-cover rounded-b-2xl"
+        />
         <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2">
           {session?.user?.image ? (
             <Image
@@ -67,7 +75,7 @@ function DashboardNavbar() {
           ) : (
             <div className="w-36 h-36 bg-gray-200 rounded-full border-4 border-white shadow-xl"></div>
           )}
-          
+  
           {/* Afficher l'e-mail sous l'image quand on n'est pas en mode édition */}
           {!editMode && (
             <p className="text-lg font-semibold text-gray-700 mt-4">
@@ -76,7 +84,7 @@ function DashboardNavbar() {
           )}
         </div>
       </div>
-
+  
       <div className="flex flex-col items-center mt-20 mb-8 w-full px-6">
         {editMode ? (
           <div className="flex flex-col items-center mb-4 w-full max-w-3xl">
@@ -110,6 +118,7 @@ function DashboardNavbar() {
       </div>
     </div>
   );
+  
 }
 
 const NavItem = ({ icon, label, onClick }) => (
