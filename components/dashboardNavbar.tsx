@@ -79,7 +79,7 @@ function DashboardNavbar() {
   
           {/* Afficher l'e-mail sous l'image quand on n'est pas en mode édition */}
           {!editMode && (
-            <p className="text-lg font-semibold text-gray-700 mt-4">
+            <p className="text-sm font-medium text-gray-600 mt-2"> {/* Réduire la taille du texte et ajuster la marge */}
               {formData.email || session?.user?.email || ""}
             </p>
           )}
@@ -119,6 +119,7 @@ function DashboardNavbar() {
       </div>
     </div>
   );
+  
   
 }
 
