@@ -24,7 +24,7 @@ export default function SignInPage() {
   const registerUser = async (email, name) => {
     try {
       const [prenom, nom] = name.split(" ");
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch("https://superiamo-backend-ademnsir-production.up.railway.app/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
