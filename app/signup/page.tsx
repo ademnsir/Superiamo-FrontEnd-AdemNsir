@@ -187,7 +187,7 @@ export default function SignUpPage() {
               ? "Adresse en cours de validation..."
               : isAddressValid
               ? `Adresse valide (${distance?.toFixed(2)} km de Paris)`
-              : "Adresse invalide"}
+              : "Adresse invalide (doit être à moins de 50 km de Paris, essayez Paris, Puteaux…)"}
           </p>
           <input
             type="tel"

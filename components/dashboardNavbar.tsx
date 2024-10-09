@@ -207,7 +207,7 @@ function DashboardNavbar() {
                     ? ""
                     : isAddressValid
                     ? `Adresse valide (${distance?.toFixed(2)} km de Paris)`
-                    : "Adresse invalide"}
+                    : "Adresse invalide (doit être à moins de 50 km de Paris, essayez Paris, Puteaux…)"}
                 </p>
               )}
               <input type="tel" name="numeroTelephone" placeholder="Numéro de téléphone" value={formData.numeroTelephone} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-md" />
