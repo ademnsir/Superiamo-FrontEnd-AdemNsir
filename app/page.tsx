@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { GoogleSignInButton, GithubSignInButton } from "@/components/authButtons";
+import googleLogo from "@/public/google.png";
+import gitLogo from "@/public/github.png";
 import illustration from "@/public/signin.jpg";
+import { GoogleSignInButton, GithubSignInButton } from "@/components/authButtons";
 
 export default function SignInPage() {
   const { data: session, status } = useSession();
@@ -14,6 +16,7 @@ export default function SignInPage() {
 
   useEffect(() => {
     if (status === "authenticated" && session?.user?.email) {
+      // Enregistrer l'utilisateur dans la base de données après authentification réussie
       registerUser(session.user.email, session.user.name);
       router.replace("/timeline");
     } else if (status !== "loading") {
@@ -23,8 +26,8 @@ export default function SignInPage() {
 
   const registerUser = async (email, name) => {
     try {
-      const [prenom, nom] = name.split(" ");
-      const response = await fetch("/api/auth/register", {
+      const [prenom, nom] = name.split(" "); // Divisez le nom complet en nom et prénom
+      const response = await fetch("/api/registerUser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,9 +55,11 @@ export default function SignInPage() {
           <h1 className="text-4xl font-extrabold text-gray-800 mb-8">Connexion</h1>
           <GoogleSignInButton />
           <GithubSignInButton />
+         
         </div>
         <div className="w-1/2 flex items-center justify-center relative overflow-hidden bg-transparent">
           <Image src={illustration} alt="Illustration" fill className="object-cover" />
+          <div className="absolute bottom-4 flex flex-col items-center"></div>
         </div>
       </div>
     </div>
